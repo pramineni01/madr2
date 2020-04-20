@@ -1,4 +1,4 @@
-package mockServer
+package mockGrpc
 
 import (
 	"context"

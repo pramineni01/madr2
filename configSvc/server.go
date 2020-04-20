@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	// "github.com/labstack/echo/middleware"
-	"github.com/pramineni01/madr/mockSvr"
+	"github.com/pramineni01/madr/mockGrpc"
 	// proto "google.golang.org/protobuf/runtime/protoiface"
 )
 

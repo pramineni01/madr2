@@ -18,27 +18,28 @@ pb-codegen: ## Generate code out of proto files
 
 # ***************** build targets *********************
 
-all: test build
+all: ## build and test
+	test build
 
-test: 
+test: ## build and test
 	${GOTEST} -v ./...
 
-clean: 
+clean: ## delete binary
 	${GOCLEAN}
 	rm -f ${BINARY}
 
-deps:
+deps: ## cleanup and reinstall
 	${GO} mod tidy
 	${GO} mod download
 
-build:
+build: ## build linux binary
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ${GO} build -o ${BINARY} ./...
 
 # Cross compilation
-build-local:
+build-local: ## build mac binary
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 ${GO} build -o ${BINARY} ./...
 
-docker-build:
+docker-build: ## docker build
 	docker build -f ${DOCKER_FILE} -t ${BINARY}:latest .
 
 # **************************************
