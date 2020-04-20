@@ -1,4 +1,4 @@
-module mockGrpc
+module github.com/pramineni01/madr/mockGrpc
 
 go 1.14
 
