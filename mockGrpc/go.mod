@@ -3,6 +3,7 @@ module github.com/pramineni01/madr/mockgrpc
 go 1.14
 
 replace github.com/pramineni01/madr/configstore => ../configstore
+
 replace github.com/pramineni01/madr/proto/keyvaluestore => ../proto/keyvaluestore
 
 require (
