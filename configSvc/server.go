@@ -1,4 +1,4 @@
-package configApi
+package configsvc
 
 import (
 	"context"
@@ -6,9 +6,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	// "github.com/labstack/echo/middleware"
+
+	cstore "github.com/pramineni01/madr/configstore"
 	"github.com/pramineni01/madr/mockGrpc"
-	// proto "google.golang.org/protobuf/runtime/protoiface"
 )
 
 // type apiCall struct {
@@ -29,8 +29,7 @@ func NewServer() *Server {
 	return new(Server)
 }
 
-var grpcSvr *mockGrpc.Server
-var grpcCtx context.Context
+var grpcSvr *mockgrpc.Server
 
 func (s *Server) Start() {
 	fmt.Println("Reached Server Start()")
@@ -52,28 +51,26 @@ func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
 }
 
-func configMockService(c echo.Context) error {
+func configMockService(eCtx echo.Context) error {
 	// parse the json
 	// jsonpb to Protos
 	// insert data in apiCalls
-	var svc string
+	// var svc string
 	// if svc = c.QueryParam("svc"); len(svc) < 1 {
 	// 	return c.String(http.StatusBadRequest, fmt.Sprintf("Query Param 'svc' is missing"))
 	// }
 	fmt.Println("Service to mock: , svc")
-	var cfg configs
-	if err := c.Bind(&cfg); err != nil {
-		return err
-	}
+	cs := cstore.NewConfigStore(eCtx)
 
-	fmt.Println(cfg.ApiCalls)
+	fmt.Println(cs.Dump())
+
 	// stop the running service, if any
 	if grpcSvr != nil {
 		grpcSvr.Stop()
 	}
 
-	cancelCtx, cancelFunc := context.WithCancel(c)
-	grpcSvr := mockSvr.NewServer(cancelCtx)
+	cancelCtx, cancelFunc := context.WithCancel(context.Background())
+	grpcSvr := mockSvr.NewServer(cancelCtx, cs)
 
 	retCh, err := grpcSvr.Start(ip_port)
 	time.Sleep(100 * time.Millisecond) // wait till grpc service is up
@@ -85,7 +82,7 @@ func configMockService(c echo.Context) error {
 	}
 	
 	// TODO: check health and if started then return started, else error
-	return c.JSON(http.StatusCreated, cfg)
+	return eCtx.JSON(http.StatusCreated, cfg)
 	
 	
 	// u := new(User)
