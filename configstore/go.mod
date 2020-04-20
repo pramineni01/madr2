@@ -1,4 +1,4 @@
-module madr/configData
+module github.com/pramineni01/madr/configstore
 
 go 1.14
 
