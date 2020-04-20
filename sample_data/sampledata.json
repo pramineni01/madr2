@@ -1,0 +1,12 @@
+{
+    "svc": "adr",
+    "apiCalls": [
+        {
+            "seq": 1,
+            "apiName": "GetValues",
+            "request": "Request data 1",
+            "response": "Response data 1",
+            "waitTime": 100
+        }
+    ]
+}
